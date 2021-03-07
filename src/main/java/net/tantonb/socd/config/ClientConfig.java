@@ -12,6 +12,7 @@ public class ClientConfig {
 
     public ClientConfig(ForgeConfigSpec.Builder builder) {
         LOGGER.info("Loading client configuration...");
+        // TODO: remove show custom world warning option...
         builder.comment("Should game show custom world warning?");
         showCustomWorldWarning = builder.define("show_custom_world_warning", false);
     }

@@ -3,9 +3,11 @@
   "package": "net.tantonb.socd.mixin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "socd.refmap.json",
-  "mixins": [],
+  "minVersion": "0.8",
   "client": [
-    "MinecraftMixin"
+    "ServerWorldInfoMixin"
   ],
-  "minVersion": "0.8"
+  "injectors": {
+    "defaultRequire": 1
+  }
 }
