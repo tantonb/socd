@@ -1,7 +1,7 @@
 package net.tantonb.socd.world;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.Lifecycle;
-import net.minecraft.block.BlockState;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
@@ -12,14 +12,11 @@ import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.Dimension;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.DimensionSettings;
 import net.minecraft.world.gen.settings.DimensionGeneratorSettings;
-import net.minecraft.world.gen.settings.DimensionStructuresSettings;
-import net.minecraft.world.gen.settings.NoiseSettings;
 import net.tantonb.socd.util.SeedStore;
-import net.tantonb.socd.world.dimx.DimxBiomeProvider;
-import net.tantonb.socd.world.dimx.DimxChunkGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,7 +25,7 @@ import java.util.function.Supplier;
 /**
  * Base class for mod custom dimension generation.
  */
-abstract public class SocdDimGenerator {
+abstract public class DimensionGenerator {
 
     protected static final Logger LOGGER = LogManager.getLogger();
 
@@ -38,7 +35,7 @@ abstract public class SocdDimGenerator {
     protected RegistryKey<DimensionSettings> dimensionSettingsKey;
     protected RegistryKey<Dimension> dimensionKey;
 
-    public SocdDimGenerator(
+    public DimensionGenerator(
             ResourceLocation dimId,
             ResourceLocation dimChunkGenId,
             ResourceLocation dimBiomeProviderId,
@@ -51,36 +48,11 @@ abstract public class SocdDimGenerator {
         this.dimensionKey = dimKey;
     }
 
-    protected DimensionStructuresSettings createStructuresSettings() {
-        return new DimensionStructuresSettings(false);
-    }
+    abstract protected DimensionSettingsGenerator getDimensionSettingsGenerator();
 
-    abstract protected NoiseSettings createNoiseSettings();
+    abstract protected Codec<? extends BiomeProvider> getBiomeProviderCodec();
 
-    abstract protected BlockState getFiller();
-
-    abstract protected BlockState getFluid();
-
-    abstract protected int getBedrockFloor();
-
-    abstract protected int getBedrockCeiling();
-
-    abstract protected int getSeaLevel();
-
-    abstract protected boolean getDisableMobGenFlag();
-
-    protected DimensionSettings createDimensionSettings() {
-        return new DimensionSettings(
-                createStructuresSettings(),
-                createNoiseSettings(),
-                getFiller(),
-                getFluid(),
-                getBedrockFloor(),
-                getBedrockCeiling(),
-                getSeaLevel(),
-                getDisableMobGenFlag()
-        );
-    }
+    abstract protected Codec<? extends ChunkGenerator> getChunkGeneratorCodec();
 
     /**
      * Called during mod loading phase, server has not been started,
@@ -91,22 +63,19 @@ abstract public class SocdDimGenerator {
      */
     public void onModLoad() {
         LOGGER.info("Registering dimension {} settings", dimId.getPath());
-        WorldGenRegistries.register(
-                WorldGenRegistries.NOISE_SETTINGS,
-                dimensionSettingsKey.getLocation(),
-                createDimensionSettings()
-        );
-        Registry.register(Registry.CHUNK_GENERATOR_CODEC, dimChunkGenId, DimxChunkGenerator.CODEC);
-        Registry.register(Registry.BIOME_PROVIDER_CODEC, dimBiomeProviderId, DimxBiomeProvider.CODEC);
+        DimensionSettings settings = getDimensionSettingsGenerator().getDimensionSettings();
+        WorldGenRegistries.register(WorldGenRegistries.NOISE_SETTINGS, dimensionSettingsKey.getLocation(), settings);
+        Registry.register(Registry.CHUNK_GENERATOR_CODEC, dimChunkGenId, getChunkGeneratorCodec());
+        Registry.register(Registry.BIOME_PROVIDER_CODEC, dimBiomeProviderId, getBiomeProviderCodec());
     }
 
-    abstract protected ChunkGenerator createChunkGenerator(
+    abstract protected ChunkGenerator getChunkGenerator(
             long seed,
             MutableRegistry<Biome> biomeRegistry,
             MutableRegistry<DimensionSettings> dimensionSettingsRegistry
     );
 
-    abstract protected DimensionType createDimensionType();
+    abstract protected DimensionType getDimensionType();
 
     /**
      * Called during server startup.
@@ -126,8 +95,8 @@ abstract public class SocdDimGenerator {
         SeedStore.setSeed(seed);
         LOGGER.info("onServerStartup(), seed = {}", seed);
 
-        ChunkGenerator chunkGenerator = createChunkGenerator(seed - 100, biomeRegistry, dimensionSettingsRegistry);
-        Supplier<DimensionType> dimTypeSupplier = () -> createDimensionType();
+        ChunkGenerator chunkGenerator = getChunkGenerator(seed - 100, biomeRegistry, dimensionSettingsRegistry);
+        Supplier<DimensionType> dimTypeSupplier = () -> getDimensionType();
         Dimension dimension = new Dimension(dimTypeSupplier, chunkGenerator);
         dimensionRegistry.register(dimensionKey, dimension, Lifecycle.stable());
     }

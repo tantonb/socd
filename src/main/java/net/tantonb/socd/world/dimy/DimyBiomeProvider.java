@@ -1,8 +1,8 @@
-package net.tantonb.socd.world.dimx;
+package net.tantonb.socd.world.dimy;
+
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import java.util.List;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryLookupCodec;
@@ -14,13 +14,15 @@ import net.minecraft.world.gen.layer.LayerUtil;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class DimxBiomeProvider extends BiomeProvider {
-    public static final Codec<DimxBiomeProvider> CODEC = RecordCodecBuilder.create((builder) -> {
+import java.util.List;
+
+public class DimyBiomeProvider extends BiomeProvider {
+    public static final Codec<DimyBiomeProvider> CODEC = RecordCodecBuilder.create((builder) -> {
         return builder.group(Codec.LONG.fieldOf("seed").stable().forGetter((overworldProvider) -> {
             return overworldProvider.seed;
         }), RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter((overworldProvider) -> {
             return overworldProvider.lookupRegistry;
-        })).apply(builder, builder.stable(DimxBiomeProvider::new));
+        })).apply(builder, builder.stable(DimyBiomeProvider::new));
     });
     private final Layer genBiomes;
     private static final List<RegistryKey<Biome>> biomes = ImmutableList.of(
@@ -94,16 +96,16 @@ public class DimxBiomeProvider extends BiomeProvider {
     private final long seed;
     private final Registry<Biome> lookupRegistry;
 
-    public DimxBiomeProvider(long seed, Registry<Biome> lookupRegistry) {
+    public DimyBiomeProvider(long seed, Registry<Biome> lookupRegistry) {
         super(biomes.stream().map((key) -> {
             return () -> {
                 return lookupRegistry.getOrThrow(key);
             };
         }));
         // modify seed to not duplicate vanilla overworld
-        this.seed = seed - 1001;
+        this.seed = seed - 1002;
         this.lookupRegistry = lookupRegistry;
-        this.genBiomes = LayerUtil.func_237215_a_(seed,false,4,4);
+        this.genBiomes = LayerUtil.func_237215_a_(this.seed,false,4,4);
     }
 
     protected Codec<? extends BiomeProvider> getBiomeProviderCodec() {
@@ -112,7 +114,7 @@ public class DimxBiomeProvider extends BiomeProvider {
 
     @OnlyIn(Dist.CLIENT)
     public BiomeProvider getBiomeProvider(long seed) {
-        return new DimxBiomeProvider(seed, this.lookupRegistry);
+        return new DimyBiomeProvider(seed, this.lookupRegistry);
     }
 
     public Biome getNoiseBiome(int x, int y, int z) {

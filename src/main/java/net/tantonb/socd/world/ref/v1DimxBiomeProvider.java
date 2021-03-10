@@ -1,4 +1,4 @@
-package net.tantonb.socd.world.dimx;
+package net.tantonb.socd.world.ref;
 
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;

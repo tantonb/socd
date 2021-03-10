@@ -1,4 +1,4 @@
-package net.tantonb.socd.world.dimx;
+package net.tantonb.socd.world.dimy;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -12,9 +12,9 @@ import net.tantonb.socd.util.SeedStore;
 
 import java.util.function.Supplier;
 
-public class DimxChunkGenerator extends NoiseChunkGenerator {
+public class DimyChunkGenerator extends NoiseChunkGenerator {
 
-    public static final Codec<DimxChunkGenerator> CODEC = RecordCodecBuilder.create(
+    public static final Codec<DimyChunkGenerator> CODEC = RecordCodecBuilder.create(
             (instance) -> instance.group(
                     BiomeProvider.CODEC.fieldOf("biome_source")
                             .forGetter((chunkGenerator) -> chunkGenerator.biomeProvider),
@@ -23,24 +23,20 @@ public class DimxChunkGenerator extends NoiseChunkGenerator {
                             .forGetter((chunkGenerator) -> chunkGenerator.field_236084_w_),
                     DimensionSettings.field_236098_b_.fieldOf("settings")
                             .forGetter((chunkGenerator) -> chunkGenerator.field_236080_h_))
-                    .apply(instance, instance.stable(DimxChunkGenerator::new)));
+                    .apply(instance, instance.stable(DimyChunkGenerator::new)));
 
-    public DimxChunkGenerator(BiomeProvider biomeProvider, long seed, Supplier<DimensionSettings> dimensionSettingsSupplier) {
-        super(biomeProvider, seed - 1, dimensionSettingsSupplier);
-    }
-
-    public Codec<? extends ChunkGenerator> getCodec() {
-        return CODEC;
+    public DimyChunkGenerator(BiomeProvider biomeProvider, long seed, Supplier<DimensionSettings> dimensionSettingsSupplier) {
+        super(biomeProvider, seed, dimensionSettingsSupplier);
     }
 
     @Override
     protected Codec<? extends ChunkGenerator> func_230347_a_() {
-        return getCodec();
+        return CODEC;
     }
 
     @OnlyIn(Dist.CLIENT)
     @Override
     public ChunkGenerator func_230349_a_(long seed) {
-        return new DimxChunkGenerator(this.biomeProvider.getBiomeProvider(seed), seed, this.field_236080_h_);
+        return new DimyChunkGenerator(this.biomeProvider.getBiomeProvider(seed), seed, this.field_236080_h_);
     }
 }

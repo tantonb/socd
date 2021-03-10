@@ -1,4 +1,4 @@
-package net.tantonb.socd.world.dimx;
+package net.tantonb.socd.world.dimy;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.tags.BlockTags;
@@ -20,9 +20,9 @@ import net.tantonb.socd.world.DimensionSettingsGenerator;
 import java.util.OptionalLong;
 import java.util.function.Supplier;
 
-public class DimxGenerator extends DimensionGenerator {
+public class DimyGenerator extends DimensionGenerator {
 
-    public DimxGenerator(
+    public DimyGenerator(
             ResourceLocation dimensionId,
             ResourceLocation dimChunkGenId,
             ResourceLocation dimBiomeProviderId,
@@ -33,19 +33,19 @@ public class DimxGenerator extends DimensionGenerator {
     }
 
     protected DimensionSettingsGenerator getDimensionSettingsGenerator() {
-        return new DimxSettingsGenerator();
+        return new DimySettingsGenerator();
     }
 
     protected Codec<? extends BiomeProvider> getBiomeProviderCodec() {
-        return DimxBiomeProvider.CODEC;
+        return DimyBiomeProvider.CODEC;
     }
 
     protected BiomeProvider getBiomeProvider(long seed, Registry<Biome> biomeRegistry) {
-        return new DimxBiomeProvider(seed, biomeRegistry);
+        return new DimyBiomeProvider(seed, biomeRegistry);
     }
 
     protected Codec<? extends ChunkGenerator> getChunkGeneratorCodec() {
-        return DimxChunkGenerator.CODEC;
+        return DimyChunkGenerator.CODEC;
     }
 
     protected ChunkGenerator getChunkGenerator(
