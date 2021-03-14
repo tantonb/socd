@@ -1,4 +1,4 @@
-package net.tantonb.socd.world.dimy;
+package net.tantonb.socd.world.dimz;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
@@ -14,16 +14,16 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
 
-public class DimyBiomeProvider extends BiomeProvider {
+public class DimzBiomeProvider extends BiomeProvider {
 
-    private static long seedModifier = 1002L;
+    private static long seedModifier = 1003L;
 
-    public static final Codec<DimyBiomeProvider> CODEC = RecordCodecBuilder.create((builder) -> {
+    public static final Codec<DimzBiomeProvider> CODEC = RecordCodecBuilder.create((builder) -> {
         return builder.group(Codec.LONG.fieldOf("seed").stable().forGetter((provider) -> {
             return provider.seed;
         }), RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter((provider) -> {
             return provider.lookupRegistry;
-        })).apply(builder, builder.stable(DimyBiomeProvider::new));
+        })).apply(builder, builder.stable(DimzBiomeProvider::new));
     });
     private static final List<RegistryKey<Biome>> biomes = ImmutableList.of(
             Biomes.OCEAN,
@@ -43,9 +43,9 @@ public class DimyBiomeProvider extends BiomeProvider {
     );
     private final long seed;
     private final Registry<Biome> lookupRegistry;
-    private final DimyBiomeLayer biomeLayer;
+    private final DimzBiomeLayer biomeLayer;
 
-    public DimyBiomeProvider(long seed, Registry<Biome> lookupRegistry) {
+    public DimzBiomeProvider(long seed, Registry<Biome> lookupRegistry) {
         super(biomes.stream().map((key) -> {
             return () -> {
                 return lookupRegistry.getOrThrow(key);
@@ -54,7 +54,7 @@ public class DimyBiomeProvider extends BiomeProvider {
         // modify seed to not duplicate vanilla overworld
         this.seed = seed + seedModifier;
         this.lookupRegistry = lookupRegistry;
-        this.biomeLayer = DimyLayerUtil.getBiomeLayer(this.seed,false,4,4);
+        this.biomeLayer = DimzLayerUtil.getBiomeLayer(this.seed,false,4,4);
     }
 
     protected Codec<? extends BiomeProvider> getBiomeProviderCodec() {
@@ -63,7 +63,7 @@ public class DimyBiomeProvider extends BiomeProvider {
 
     @OnlyIn(Dist.CLIENT)
     public BiomeProvider getBiomeProvider(long seed) {
-        return new DimyBiomeProvider(seed, this.lookupRegistry);
+        return new DimzBiomeProvider(seed, this.lookupRegistry);
     }
 
     public Biome getNoiseBiome(int x, int y, int z) {

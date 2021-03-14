@@ -52,7 +52,7 @@ public class SocdMod
         CLIENT_CONFIG = config.client;
 
         LOGGER.info("client config show custom world warning? {}", CLIENT_CONFIG.showCustomWorldWarning);
-        forgeBus.addListener(SocdDimensions::onServerStartup);
+        forgeBus.addListener(SocdDimensions::onServerStart);
         forgeBus.addListener(SocdCommands::onRegisterCommands);
     }
 

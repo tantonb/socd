@@ -14,13 +14,16 @@ import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.DimensionSettings;
 import net.minecraft.world.gen.NoiseChunkGenerator;
-import net.tantonb.socd.world.DimensionGenerator;
+import net.tantonb.socd.world.VanillaDimensionGenerator;
 import net.tantonb.socd.world.DimensionSettingsGenerator;
+import net.tantonb.socd.world.dimx.DimxChunkGenerator;
 
 import java.util.OptionalLong;
 import java.util.function.Supplier;
 
-public class DimyGenerator extends DimensionGenerator {
+public class DimyGenerator extends VanillaDimensionGenerator {
+
+    public static long SEED_OFFSET = 1002L;
 
     public DimyGenerator(
             ResourceLocation dimensionId,
@@ -30,6 +33,7 @@ public class DimyGenerator extends DimensionGenerator {
             RegistryKey<Dimension> dimensionKey)
     {
         super(dimensionId, dimChunkGenId, dimBiomeProviderId, dimensionSettingsKey, dimensionKey);
+        seedModifier = SEED_OFFSET;
     }
 
     protected DimensionSettingsGenerator getDimensionSettingsGenerator() {
@@ -48,15 +52,8 @@ public class DimyGenerator extends DimensionGenerator {
         return DimyChunkGenerator.CODEC;
     }
 
-    protected ChunkGenerator getChunkGenerator(
-            long seed,
-            MutableRegistry<Biome> biomeRegistry,
-            MutableRegistry<DimensionSettings> dimensionSettingsRegistry)
-    {
-        BiomeProvider biomeProvider = getBiomeProvider(seed, biomeRegistry);
-        Supplier<DimensionSettings> dimSettingsSupplier =
-                () -> dimensionSettingsRegistry.getOrThrow(dimensionSettingsKey);
-        return new NoiseChunkGenerator(biomeProvider, seed, dimSettingsSupplier);
+    protected ChunkGenerator createChunkGenerator(BiomeProvider bp, long seed, Supplier<DimensionSettings> dss) {
+        return new DimyChunkGenerator(bp, seed, dss);
     }
 
     protected DimensionType getDimensionType() {

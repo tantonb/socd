@@ -15,6 +15,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class DimxBiomeProvider extends BiomeProvider {
+
+    private static long seedModifier = 1001L;
+
     public static final Codec<DimxBiomeProvider> CODEC = RecordCodecBuilder.create((builder) -> {
         return builder.group(Codec.LONG.fieldOf("seed").stable().forGetter((overworldProvider) -> {
             return overworldProvider.seed;
@@ -101,9 +104,9 @@ public class DimxBiomeProvider extends BiomeProvider {
             };
         }));
         // modify seed to not duplicate vanilla overworld
-        this.seed = seed - 1001;
+        this.seed = seed + seedModifier;
         this.lookupRegistry = lookupRegistry;
-        this.genBiomes = LayerUtil.func_237215_a_(seed,false,4,4);
+        this.genBiomes = LayerUtil.func_237215_a_(this.seed,false,4,4);
     }
 
     protected Codec<? extends BiomeProvider> getBiomeProviderCodec() {

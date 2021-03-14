@@ -79,6 +79,16 @@ public class TeleportCommands {
     }
 
     /**
+     * Command to teleport player to dimension Z.
+     *
+     * @param player
+     * @return
+     */
+    public static int dimz(ServerPlayerEntity player) {
+        return teleport(player, SocdDimensions.RK_WORLD_DIMZ);
+    }
+
+    /**
      * Register teleportation commands with server.
      *
      * @param dispatcher
@@ -91,6 +101,10 @@ public class TeleportCommands {
 
         dispatcher.register(Commands.literal("dimy")
                 .executes(context -> dimy(context.getSource().asPlayer()))
+        );
+
+        dispatcher.register(Commands.literal("dimz")
+                .executes(context -> dimz(context.getSource().asPlayer()))
         );
 
         dispatcher.register(Commands.literal("home")

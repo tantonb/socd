@@ -1,4 +1,4 @@
-package net.tantonb.socd.world.dimx;
+package net.tantonb.socd.world.dimz;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.tags.BlockTags;
@@ -16,15 +16,16 @@ import net.minecraft.world.gen.DimensionSettings;
 import net.minecraft.world.gen.NoiseChunkGenerator;
 import net.tantonb.socd.world.VanillaDimensionGenerator;
 import net.tantonb.socd.world.DimensionSettingsGenerator;
+import net.tantonb.socd.world.dimy.DimyChunkGenerator;
 
 import java.util.OptionalLong;
 import java.util.function.Supplier;
 
-public class DimxGenerator extends VanillaDimensionGenerator {
+public class DimzGenerator extends VanillaDimensionGenerator {
 
-    public static long SEED_OFFSET = 1001L;
+    public static long SEED_OFFSET = 1003L;
 
-    public DimxGenerator(
+    public DimzGenerator(
             ResourceLocation dimensionId,
             ResourceLocation dimChunkGenId,
             ResourceLocation dimBiomeProviderId,
@@ -36,25 +37,24 @@ public class DimxGenerator extends VanillaDimensionGenerator {
     }
 
     protected DimensionSettingsGenerator getDimensionSettingsGenerator() {
-        return new DimxSettingsGenerator();
+        return new DimzSettingsGenerator();
     }
 
     protected Codec<? extends BiomeProvider> getBiomeProviderCodec() {
-        return DimxBiomeProvider.CODEC;
+        return DimzBiomeProvider.CODEC;
     }
 
     protected BiomeProvider getBiomeProvider(long seed, Registry<Biome> biomeRegistry) {
-        return new DimxBiomeProvider(seed, biomeRegistry);
+        return new DimzBiomeProvider(seed, biomeRegistry);
     }
 
     protected Codec<? extends ChunkGenerator> getChunkGeneratorCodec() {
-        return DimxChunkGenerator.CODEC;
+        return DimzChunkGenerator.CODEC;
     }
 
     protected ChunkGenerator createChunkGenerator(BiomeProvider bp, long seed, Supplier<DimensionSettings> dss) {
-        return new DimxChunkGenerator(bp, seed, dss);
+        return new DimzChunkGenerator(bp, seed, dss);
     }
-
     protected DimensionType getDimensionType() {
         return new DimensionType(
                 OptionalLong.of(6000L), true, false, false, true,

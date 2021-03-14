@@ -18,15 +18,14 @@ public class DimxChunkGenerator extends NoiseChunkGenerator {
             (instance) -> instance.group(
                     BiomeProvider.CODEC.fieldOf("biome_source")
                             .forGetter((chunkGenerator) -> chunkGenerator.biomeProvider),
-                    Codec.LONG.fieldOf("seed")
-                            .orElseGet(SeedStore::getSeed)
+                    Codec.LONG.fieldOf("seed").stable()
                             .forGetter((chunkGenerator) -> chunkGenerator.field_236084_w_),
                     DimensionSettings.field_236098_b_.fieldOf("settings")
                             .forGetter((chunkGenerator) -> chunkGenerator.field_236080_h_))
                     .apply(instance, instance.stable(DimxChunkGenerator::new)));
 
     public DimxChunkGenerator(BiomeProvider biomeProvider, long seed, Supplier<DimensionSettings> dimensionSettingsSupplier) {
-        super(biomeProvider, seed - 1, dimensionSettingsSupplier);
+        super(biomeProvider, seed, dimensionSettingsSupplier);
     }
 
     public Codec<? extends ChunkGenerator> getCodec() {
