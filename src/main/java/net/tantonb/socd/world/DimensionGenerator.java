@@ -99,7 +99,7 @@ abstract public class DimensionGenerator {
      *
      * @param server
      */
-    public void onServerStartup(MinecraftServer server) {
+    public void onServerStart(MinecraftServer server) {
 
         LOGGER.info("Starting dimension {} on server...", getName());
 

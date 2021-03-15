@@ -2,7 +2,6 @@ package net.tantonb.socd.world;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.Lifecycle;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.MutableRegistry;
@@ -15,9 +14,6 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.DimensionSettings;
-import net.minecraft.world.gen.settings.DimensionGeneratorSettings;
-import net.tantonb.socd.util.SeedStore;
-import net.tantonb.socd.world.dimx.DimxChunkGenerator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,8 +28,8 @@ abstract public class VanillaDimensionGenerator extends DimensionGenerator {
 
     protected ResourceLocation dimChunkGenId;
     protected ResourceLocation dimBiomeProviderId;
-    protected RegistryKey<DimensionSettings> dimensionSettingsKey;
-    protected RegistryKey<Dimension> dimensionKey;
+    protected RegistryKey<DimensionSettings> dimSettingsKey;
+    protected RegistryKey<Dimension> dimKey;
     protected long seedModifier = 0;
 
     public VanillaDimensionGenerator(
@@ -45,8 +41,8 @@ abstract public class VanillaDimensionGenerator extends DimensionGenerator {
         super(dimId);
         this.dimChunkGenId = dimChunkGenId;
         this.dimBiomeProviderId = dimBiomeProviderId;
-        this.dimensionSettingsKey = dimSettingsKey;
-        this.dimensionKey = dimKey;
+        this.dimSettingsKey = dimSettingsKey;
+        this.dimKey = dimKey;
     }
 
     abstract protected Codec<? extends BiomeProvider> getBiomeProviderCodec();
@@ -60,7 +56,7 @@ abstract public class VanillaDimensionGenerator extends DimensionGenerator {
      */
     protected void setupDimension() {
         DimensionSettings settings = getDimensionSettingsGenerator().getDimensionSettings();
-        WorldGenRegistries.register(WorldGenRegistries.NOISE_SETTINGS, dimensionSettingsKey.getLocation(), settings);
+        WorldGenRegistries.register(WorldGenRegistries.NOISE_SETTINGS, dimSettingsKey.getLocation(), settings);
         Registry.register(Registry.CHUNK_GENERATOR_CODEC, dimChunkGenId, getChunkGeneratorCodec());
         Registry.register(Registry.BIOME_PROVIDER_CODEC, dimBiomeProviderId, getBiomeProviderCodec());
     }
@@ -85,7 +81,7 @@ abstract public class VanillaDimensionGenerator extends DimensionGenerator {
     {
         BiomeProvider biomeProvider = getBiomeProvider(seed, biomeRegistry);
         Supplier<DimensionSettings> dimSettingsSupplier =
-                () -> dimensionSettingsRegistry.getOrThrow(dimensionSettingsKey);
+                () -> dimensionSettingsRegistry.getOrThrow(dimSettingsKey);
         return createChunkGenerator(biomeProvider, seed, dimSettingsSupplier);
     }
 
@@ -111,6 +107,6 @@ abstract public class VanillaDimensionGenerator extends DimensionGenerator {
         ChunkGenerator chunkGenerator = getChunkGenerator(getSeed(), biomeRegistry, dimensionSettingsRegistry);
         Supplier<DimensionType> dimTypeSupplier = this::getDimensionType;
         Dimension dimension = new Dimension(dimTypeSupplier, chunkGenerator);
-        dimensionRegistry.register(dimensionKey, dimension, Lifecycle.stable());
+        dimensionRegistry.register(dimKey, dimension, Lifecycle.stable());
     }
 }

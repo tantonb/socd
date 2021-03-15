@@ -9,215 +9,21 @@ import net.minecraft.world.gen.area.IArea;
 import net.minecraft.world.gen.area.IAreaFactory;
 import net.minecraft.world.gen.area.LazyArea;
 import net.minecraft.world.gen.layer.*;
-import net.minecraft.world.gen.layer.traits.IAreaTransformer1;
+import net.tantonb.socd.world.dimz.layer.AddIslandTransformer;
+import net.tantonb.socd.world.dimz.layer.ReduceOceanTransformer;
+import net.tantonb.socd.world.dimz.layer.LandSeaInitializer;
+import net.tantonb.socd.world.dimz.layer.ZoomTransformer;
+import net.tantonb.socd.world.dimz.layer.transform.AreaTransformer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.function.LongFunction;
 
 public class DimzLayerUtil {
-    private static final Int2IntMap field_242937_a = Util.make(new Int2IntOpenHashMap(), (p_242938_0_) -> {
-        func_242939_a(p_242938_0_, Type.BEACH, 16);
-        func_242939_a(p_242938_0_, Type.BEACH, 26);
-        func_242939_a(p_242938_0_, Type.DESERT, 2);
-        func_242939_a(p_242938_0_, Type.DESERT, 17);
-        func_242939_a(p_242938_0_, Type.DESERT, 130);
-        func_242939_a(p_242938_0_, Type.EXTREME_HILLS, 131);
-        func_242939_a(p_242938_0_, Type.EXTREME_HILLS, 162);
-        func_242939_a(p_242938_0_, Type.EXTREME_HILLS, 20);
-        func_242939_a(p_242938_0_, Type.EXTREME_HILLS, 3);
-        func_242939_a(p_242938_0_, Type.EXTREME_HILLS, 34);
-        func_242939_a(p_242938_0_, Type.FOREST, 27);
-        func_242939_a(p_242938_0_, Type.FOREST, 28);
-        func_242939_a(p_242938_0_, Type.FOREST, 29);
-        func_242939_a(p_242938_0_, Type.FOREST, 157);
-        func_242939_a(p_242938_0_, Type.FOREST, 132);
-        func_242939_a(p_242938_0_, Type.FOREST, 4);
-        func_242939_a(p_242938_0_, Type.FOREST, 155);
-        func_242939_a(p_242938_0_, Type.FOREST, 156);
-        func_242939_a(p_242938_0_, Type.FOREST, 18);
-        func_242939_a(p_242938_0_, Type.ICY, 140);
-        func_242939_a(p_242938_0_, Type.ICY, 13);
-        func_242939_a(p_242938_0_, Type.ICY, 12);
-        func_242939_a(p_242938_0_, Type.JUNGLE, 168);
-        func_242939_a(p_242938_0_, Type.JUNGLE, 169);
-        func_242939_a(p_242938_0_, Type.JUNGLE, 21);
-        func_242939_a(p_242938_0_, Type.JUNGLE, 23);
-        func_242939_a(p_242938_0_, Type.JUNGLE, 22);
-        func_242939_a(p_242938_0_, Type.JUNGLE, 149);
-        func_242939_a(p_242938_0_, Type.JUNGLE, 151);
-        func_242939_a(p_242938_0_, Type.MESA, 37);
-        func_242939_a(p_242938_0_, Type.MESA, 165);
-        func_242939_a(p_242938_0_, Type.MESA, 167);
-        func_242939_a(p_242938_0_, Type.MESA, 166);
-        func_242939_a(p_242938_0_, Type.BADLANDS_PLATEAU, 39);
-        func_242939_a(p_242938_0_, Type.BADLANDS_PLATEAU, 38);
-        func_242939_a(p_242938_0_, Type.MUSHROOM, 14);
-        func_242939_a(p_242938_0_, Type.MUSHROOM, 15);
-        func_242939_a(p_242938_0_, Type.NONE, 25);
-        func_242939_a(p_242938_0_, Type.OCEAN, 46);
-        func_242939_a(p_242938_0_, Type.OCEAN, 49);
-        func_242939_a(p_242938_0_, Type.OCEAN, 50);
-        func_242939_a(p_242938_0_, Type.OCEAN, 48);
-        func_242939_a(p_242938_0_, Type.OCEAN, 24);
-        func_242939_a(p_242938_0_, Type.OCEAN, 47);
-        func_242939_a(p_242938_0_, Type.OCEAN, 10);
-        func_242939_a(p_242938_0_, Type.OCEAN, 45);
-        func_242939_a(p_242938_0_, Type.OCEAN, 0);
-        func_242939_a(p_242938_0_, Type.OCEAN, 44);
-        func_242939_a(p_242938_0_, Type.PLAINS, 1);
-        func_242939_a(p_242938_0_, Type.PLAINS, 129);
-        func_242939_a(p_242938_0_, Type.RIVER, 11);
-        func_242939_a(p_242938_0_, Type.RIVER, 7);
-        func_242939_a(p_242938_0_, Type.SAVANNA, 35);
-        func_242939_a(p_242938_0_, Type.SAVANNA, 36);
-        func_242939_a(p_242938_0_, Type.SAVANNA, 163);
-        func_242939_a(p_242938_0_, Type.SAVANNA, 164);
-        func_242939_a(p_242938_0_, Type.SWAMP, 6);
-        func_242939_a(p_242938_0_, Type.SWAMP, 134);
-        func_242939_a(p_242938_0_, Type.TAIGA, 160);
-        func_242939_a(p_242938_0_, Type.TAIGA, 161);
-        func_242939_a(p_242938_0_, Type.TAIGA, 32);
-        func_242939_a(p_242938_0_, Type.TAIGA, 33);
-        func_242939_a(p_242938_0_, Type.TAIGA, 30);
-        func_242939_a(p_242938_0_, Type.TAIGA, 31);
-        func_242939_a(p_242938_0_, Type.TAIGA, 158);
-        func_242939_a(p_242938_0_, Type.TAIGA, 5);
-        func_242939_a(p_242938_0_, Type.TAIGA, 19);
-        func_242939_a(p_242938_0_, Type.TAIGA, 133);
-    });
 
-    public static <AreaType extends IArea, Lalc extends IExtendedNoiseRandom<AreaType>> IAreaFactory<AreaType> repeat(
-            long seed,
-            IAreaTransformer1 transformer,
-            IAreaFactory<AreaType> afStart,
-            int count,
-            LongFunction<Lalc> contextFactory)
-    {
-        IAreaFactory<AreaType> afModified = afStart;
+    private static final Logger LOGGER = LogManager.getLogger();
 
-        for(int i = 0; i < count; ++i) {
-            afModified = transformer.apply(contextFactory.apply(seed + (long)i), afModified);
-        }
-
-        return afModified;
-    }
-
-    private static
-            <AreaType extends IArea, Lalc extends IExtendedNoiseRandom<AreaType>>
-        IAreaFactory<AreaType> createVanillaAreaFactory(
-            boolean legacyBiomeFlag,
-            int biomeSizing,
-            int riverZooming,
-            LongFunction<Lalc> areaRng)
-    {
-        // generate base layer, seed in some islands of land, remove excess ocean
-        // at this point its not clear if coordinate values represent actual biome ids...
-        // 0 = ocean, land = 1
-        IAreaFactory<AreaType> afBase = IslandLayer.INSTANCE.apply(areaRng.apply(1L));
-        afBase = ZoomLayer.FUZZY.apply(areaRng.apply(2000L), afBase);
-        afBase = AddIslandLayer.INSTANCE.apply(areaRng.apply(1L), afBase);
-        afBase = ZoomLayer.NORMAL.apply(areaRng.apply(2001L), afBase);
-        afBase = AddIslandLayer.INSTANCE.apply(areaRng.apply(2L), afBase);
-        afBase = AddIslandLayer.INSTANCE.apply(areaRng.apply(50L), afBase);
-        afBase = AddIslandLayer.INSTANCE.apply(areaRng.apply(70L), afBase);
-        afBase = RemoveTooMuchOceanLayer.INSTANCE.apply(areaRng.apply(2L), afBase);
-
-        // generate ocean variation layer
-        // generates coordinate values with various shallow ocean biome ids
-        IAreaFactory<AreaType> afOcean = OceanLayer.INSTANCE.apply(areaRng.apply(2L));
-        afOcean = repeat(2001L, ZoomLayer.NORMAL, afOcean, 6, areaRng);
-
-        // refine base layer, add in various edge transitions, deep ocean, cold
-        // land values may be abstract at this point, representing temperatures?
-        // 0 = ocean, 1 = land, 3, 4 = snow-ish
-        afBase = AddSnowLayer.INSTANCE.apply(areaRng.apply(2L), afBase);
-        afBase = AddIslandLayer.INSTANCE.apply(areaRng.apply(3L), afBase);
-        // 2 =  of 3, 4 (ice/snow?)
-        afBase = EdgeLayer.CoolWarm.INSTANCE.apply(areaRng.apply(2L), afBase);
-        // 3 = edge between
-        afBase = EdgeLayer.HeatIce.INSTANCE.apply(areaRng.apply(2L), afBase);
-        afBase = EdgeLayer.Special.INSTANCE.apply(areaRng.apply(3L), afBase);
-        afBase = ZoomLayer.NORMAL.apply(areaRng.apply(2002L), afBase);
-        afBase = ZoomLayer.NORMAL.apply(areaRng.apply(2003L), afBase);
-        afBase = AddIslandLayer.INSTANCE.apply(areaRng.apply(4L), afBase);
-        afBase = AddMushroomIslandLayer.INSTANCE.apply(areaRng.apply(5L), afBase);
-        afBase = DeepOceanLayer.INSTANCE.apply(areaRng.apply(4L), afBase);
-        afBase = repeat(1000L, ZoomLayer.NORMAL, afBase, 0, areaRng);
-
-        // generate river layer from base
-        IAreaFactory<AreaType> afRivers = repeat(1000L, ZoomLayer.NORMAL, afBase, 0, areaRng);
-        // turns non-ocean values into large randomized values...?
-        afRivers = StartRiverLayer.INSTANCE.apply(areaRng.apply(100L), afRivers);
-
-        // convert base layer to biome specific layer
-        IAreaFactory<AreaType> afBiomes = (new BiomeLayer(legacyBiomeFlag)).apply(areaRng.apply(200L), afBase);
-        afBiomes = AddBambooForestLayer.INSTANCE.apply(areaRng.apply(1001L), afBiomes);
-        afBiomes = repeat(1000L, ZoomLayer.NORMAL, afBiomes, 2, areaRng);
-        afBiomes = EdgeBiomeLayer.INSTANCE.apply(areaRng.apply(1000L), afBiomes);
-
-        IAreaFactory<AreaType> afRiversZoom2 = repeat(1000L, ZoomLayer.NORMAL, afRivers, 2, areaRng);
-        afBiomes = HillsLayer.INSTANCE.apply(areaRng.apply(1000L), afBiomes, afRiversZoom2);
-
-        // finish up river layer
-        afRivers = repeat(1000L, ZoomLayer.NORMAL, afRivers, 2, areaRng);
-        afRivers = repeat(1000L, ZoomLayer.NORMAL, afRivers, riverZooming, areaRng);
-        afRivers = RiverLayer.INSTANCE.apply(areaRng.apply(1L), afRivers);
-        afRivers = SmoothLayer.INSTANCE.apply(areaRng.apply(1000L), afRivers);
-
-        // sprinkle in some rare biome(s)
-        afBiomes = RareBiomeLayer.INSTANCE.apply(areaRng.apply(1001L), afBiomes);
-
-        // add shores, smooth
-        for(int i = 0; i < biomeSizing; ++i) {
-            afBiomes = ZoomLayer.NORMAL.apply(areaRng.apply((long)(1000 + i)), afBiomes);
-            if (i == 0) {
-                afBiomes = AddIslandLayer.INSTANCE.apply(areaRng.apply(3L), afBiomes);
-            }
-
-            if (i == 1 || biomeSizing == 1) {
-                afBiomes = ShoreLayer.INSTANCE.apply(areaRng.apply(1000L), afBiomes);
-            }
-        }
-        afBiomes = SmoothLayer.INSTANCE.apply(areaRng.apply(1000L), afBiomes);
-
-        // merge in river layer
-        afBiomes = MixRiverLayer.INSTANCE.apply(areaRng.apply(100L), afBiomes, afRivers);
-
-        // merge in oceans
-        afBiomes = MixOceansLayer.INSTANCE.apply(areaRng.apply(100L), afBiomes, afOcean);
-
-        return afBiomes;
-    }
-
-    public static DimzBiomeLayer getBiomeLayer(long seed, boolean legacyBiomeFlag, int biomeSizing, int riverZooming) {
-        int memCacheSize = 25;
-        LongFunction<LazyAreaLayerContext> areaRng = (seedModifier) -> {
-            return new LazyAreaLayerContext(memCacheSize, seed, seedModifier);
-        };
-        IAreaFactory<LazyArea> areaFactory = createVanillaAreaFactory(legacyBiomeFlag, biomeSizing, riverZooming, areaRng);
-        return new DimzBiomeLayer(areaFactory);
-    }
-
-    public static boolean areBiomesSimilar(int p_202826_0_, int p_202826_1_) {
-        if (p_202826_0_ == p_202826_1_) {
-            return true;
-        } else {
-            return field_242937_a.get(p_202826_0_) == field_242937_a.get(p_202826_1_);
-        }
-    }
-
-    private static void func_242939_a(Int2IntOpenHashMap p_242939_0_, Type p_242939_1_, int p_242939_2_) {
-        p_242939_0_.put(p_242939_2_, p_242939_1_.ordinal());
-    }
-
-    protected static boolean isOcean(int biomeIn) {
-        return biomeIn == 44 || biomeIn == 45 || biomeIn == 0 || biomeIn == 46 || biomeIn == 10 || biomeIn == 47 || biomeIn == 48 || biomeIn == 24 || biomeIn == 49 || biomeIn == 50;
-    }
-
-    protected static boolean isShallowOcean(int biomeIn) {
-        return biomeIn == 44 || biomeIn == 45 || biomeIn == 0 || biomeIn == 46 || biomeIn == 10;
-    }
-
-    static enum Type {
+    enum BiomeType {
         NONE,
         TAIGA,
         EXTREME_HILLS,
@@ -235,4 +41,216 @@ public class DimzLayerUtil {
         SWAMP,
         MUSHROOM;
     }
+
+    private static final Int2IntMap biomeTypes = Util.make(new Int2IntOpenHashMap(), (map) -> {
+        setBiomeType(map, BiomeType.BEACH, 16);
+        setBiomeType(map, BiomeType.BEACH, 26);
+        setBiomeType(map, BiomeType.DESERT, 2);
+        setBiomeType(map, BiomeType.DESERT, 17);
+        setBiomeType(map, BiomeType.DESERT, 130);
+        setBiomeType(map, BiomeType.EXTREME_HILLS, 131);
+        setBiomeType(map, BiomeType.EXTREME_HILLS, 162);
+        setBiomeType(map, BiomeType.EXTREME_HILLS, 20);
+        setBiomeType(map, BiomeType.EXTREME_HILLS, 3);
+        setBiomeType(map, BiomeType.EXTREME_HILLS, 34);
+        setBiomeType(map, BiomeType.FOREST, 27);
+        setBiomeType(map, BiomeType.FOREST, 28);
+        setBiomeType(map, BiomeType.FOREST, 29);
+        setBiomeType(map, BiomeType.FOREST, 157);
+        setBiomeType(map, BiomeType.FOREST, 132);
+        setBiomeType(map, BiomeType.FOREST, 4);
+        setBiomeType(map, BiomeType.FOREST, 155);
+        setBiomeType(map, BiomeType.FOREST, 156);
+        setBiomeType(map, BiomeType.FOREST, 18);
+        setBiomeType(map, BiomeType.ICY, 140);
+        setBiomeType(map, BiomeType.ICY, 13);
+        setBiomeType(map, BiomeType.ICY, 12);
+        setBiomeType(map, BiomeType.JUNGLE, 168);
+        setBiomeType(map, BiomeType.JUNGLE, 169);
+        setBiomeType(map, BiomeType.JUNGLE, 21);
+        setBiomeType(map, BiomeType.JUNGLE, 23);
+        setBiomeType(map, BiomeType.JUNGLE, 22);
+        setBiomeType(map, BiomeType.JUNGLE, 149);
+        setBiomeType(map, BiomeType.JUNGLE, 151);
+        setBiomeType(map, BiomeType.MESA, 37);
+        setBiomeType(map, BiomeType.MESA, 165);
+        setBiomeType(map, BiomeType.MESA, 167);
+        setBiomeType(map, BiomeType.MESA, 166);
+        setBiomeType(map, BiomeType.BADLANDS_PLATEAU, 39);
+        setBiomeType(map, BiomeType.BADLANDS_PLATEAU, 38);
+        setBiomeType(map, BiomeType.MUSHROOM, 14);
+        setBiomeType(map, BiomeType.MUSHROOM, 15);
+        setBiomeType(map, BiomeType.NONE, 25);
+        setBiomeType(map, BiomeType.OCEAN, 46);
+        setBiomeType(map, BiomeType.OCEAN, 49);
+        setBiomeType(map, BiomeType.OCEAN, 50);
+        setBiomeType(map, BiomeType.OCEAN, 48);
+        setBiomeType(map, BiomeType.OCEAN, 24);
+        setBiomeType(map, BiomeType.OCEAN, 47);
+        setBiomeType(map, BiomeType.OCEAN, 10);
+        setBiomeType(map, BiomeType.OCEAN, 45);
+        setBiomeType(map, BiomeType.OCEAN, 0);
+        setBiomeType(map, BiomeType.OCEAN, 44);
+        setBiomeType(map, BiomeType.PLAINS, 1);
+        setBiomeType(map, BiomeType.PLAINS, 129);
+        setBiomeType(map, BiomeType.RIVER, 11);
+        setBiomeType(map, BiomeType.RIVER, 7);
+        setBiomeType(map, BiomeType.SAVANNA, 35);
+        setBiomeType(map, BiomeType.SAVANNA, 36);
+        setBiomeType(map, BiomeType.SAVANNA, 163);
+        setBiomeType(map, BiomeType.SAVANNA, 164);
+        setBiomeType(map, BiomeType.SWAMP, 6);
+        setBiomeType(map, BiomeType.SWAMP, 134);
+        setBiomeType(map, BiomeType.TAIGA, 160);
+        setBiomeType(map, BiomeType.TAIGA, 161);
+        setBiomeType(map, BiomeType.TAIGA, 32);
+        setBiomeType(map, BiomeType.TAIGA, 33);
+        setBiomeType(map, BiomeType.TAIGA, 30);
+        setBiomeType(map, BiomeType.TAIGA, 31);
+        setBiomeType(map, BiomeType.TAIGA, 158);
+        setBiomeType(map, BiomeType.TAIGA, 5);
+        setBiomeType(map, BiomeType.TAIGA, 19);
+        setBiomeType(map, BiomeType.TAIGA, 133);
+    });
+
+    private static void setBiomeType(Int2IntOpenHashMap map, BiomeType biomeType, int biomeId) {
+        map.put(biomeId, biomeType.ordinal());
+    }
+
+    public static boolean sameBiomeType(int biomeId1, int biomeId2) {
+        if (biomeId1 == biomeId2) {
+            return true;
+        }
+        return biomeTypes.get(biomeId1) == biomeTypes.get(biomeId2);
+    }
+
+    protected static boolean isShallowOcean(int biomeId) {
+        return biomeId == 44 || biomeId == 45 || biomeId == 0 || biomeId == 46 || biomeId == 10;
+    }
+
+    protected static boolean isOcean(int biomeId) {
+        return biomeId == 44 || biomeId == 45 || biomeId == 0 || biomeId == 46 || biomeId == 10 ||
+                biomeId == 47 || biomeId == 48 || biomeId == 24 || biomeId == 49 || biomeId == 50;
+    }
+
+    public static <AreaType extends IArea, Lalc extends IExtendedNoiseRandom<AreaType>> IAreaFactory<AreaType> repeatTransform(
+            long seedModifier,
+            AreaTransformer transformer,
+            IAreaFactory<AreaType> start,
+            int count,
+            LongFunction<Lalc> areaRng)
+    {
+        IAreaFactory<AreaType> result = start;
+
+        for(int i = 0; i < count; ++i) {
+            result = transformer.apply(areaRng.apply(seedModifier + (long)i), result);
+        }
+
+        return result;
+    }
+
+    private static
+            <AreaType extends IArea, Lalc extends IExtendedNoiseRandom<AreaType>>
+        IAreaFactory<AreaType> createVanillaAreaFactory(
+            boolean legacyBiomeFlag,
+            int biomeSizing,
+            int riverZooming,
+            LongFunction<Lalc> areaRng)
+    {
+        LOGGER.info("Creating dimension z biome layer area factory...");
+
+        AddIslandTransformer addIsland = new AddIslandTransformer(DimzLayerUtil::isShallowOcean);
+        ReduceOceanTransformer reduceOcean = new ReduceOceanTransformer(DimzLayerUtil::isShallowOcean);
+
+        // generate base layer of ocean, sprinkle in some islands of land and
+        // zoom in to grow the initial islands into larger bodies of land,
+        // remove excess ocean.
+        // Note: base area values do not yet represent actual biome IDs...
+        // 0 = ocean, land = 1
+        IAreaFactory<AreaType> base = LandSeaInitializer.INSTANCE.initialize(areaRng.apply(1L));
+        base = ZoomTransformer.FUZZY.apply(areaRng.apply(2000L), base);
+        //base = AddIslandLayer.INSTANCE.apply(areaRng.apply(1L), base);
+        base = addIsland.apply(areaRng.apply(1L), base);
+        base = ZoomTransformer.NORMAL.apply(areaRng.apply(2001L), base);
+        base = addIsland.apply(areaRng.apply(2L), base);
+        base = addIsland.apply(areaRng.apply(50L), base);
+        base = addIsland.apply(areaRng.apply(70L), base);
+        base = reduceOcean.apply(areaRng.apply(2L), base);
+
+        // generate ocean variation layer
+        // generates coordinate values with various shallow ocean biome ids
+        IAreaFactory<AreaType> ocean = OceanLayer.INSTANCE.apply(areaRng.apply(2L));
+        ocean = repeatTransform(2001L, ZoomTransformer.NORMAL, ocean, 6, areaRng);
+
+        // refine base layer, add in various edge transitions, deep ocean, cold
+        // land values may be abstract at this point, representing temperatures?
+        // 0 = ocean, 1 = land, 3, 4 = snow-ish
+        base = AddSnowLayer.INSTANCE.apply(areaRng.apply(2L), base);
+        base = addIsland.apply(areaRng.apply(3L), base);
+        // 2 =  of 3, 4 (ice/snow?)
+        base = EdgeLayer.CoolWarm.INSTANCE.apply(areaRng.apply(2L), base);
+        // 3 = edge between
+        base = EdgeLayer.HeatIce.INSTANCE.apply(areaRng.apply(2L), base);
+        base = EdgeLayer.Special.INSTANCE.apply(areaRng.apply(3L), base);
+        base = ZoomTransformer.NORMAL.apply(areaRng.apply(2002L), base);
+        base = ZoomTransformer.NORMAL.apply(areaRng.apply(2003L), base);
+        base = addIsland.apply(areaRng.apply(4L), base);
+        base = AddMushroomIslandLayer.INSTANCE.apply(areaRng.apply(5L), base);
+        base = DeepOceanLayer.INSTANCE.apply(areaRng.apply(4L), base);
+        base = repeatTransform(1000L, ZoomTransformer.NORMAL, base, 0, areaRng);
+
+        // generate river layer from base
+        IAreaFactory<AreaType> rivers = repeatTransform(1000L, ZoomTransformer.NORMAL, base, 0, areaRng);
+        // turns non-ocean values into large randomized values...?
+        rivers = StartRiverLayer.INSTANCE.apply(areaRng.apply(100L), rivers);
+
+        // convert base layer to biome specific layer
+        IAreaFactory<AreaType> biomes = (new BiomeLayer(legacyBiomeFlag)).apply(areaRng.apply(200L), base);
+        biomes = AddBambooForestLayer.INSTANCE.apply(areaRng.apply(1001L), biomes);
+        biomes = repeatTransform(1000L, ZoomTransformer.NORMAL, biomes, 2, areaRng);
+        biomes = EdgeBiomeLayer.INSTANCE.apply(areaRng.apply(1000L), biomes);
+
+        IAreaFactory<AreaType> afRiversZoom2 = repeatTransform(1000L, ZoomTransformer.NORMAL, rivers, 2, areaRng);
+        biomes = HillsLayer.INSTANCE.apply(areaRng.apply(1000L), biomes, afRiversZoom2);
+
+        // finish up river layer
+        rivers = repeatTransform(1000L, ZoomTransformer.NORMAL, rivers, 2, areaRng);
+        rivers = repeatTransform(1000L, ZoomTransformer.NORMAL, rivers, riverZooming, areaRng);
+        rivers = RiverLayer.INSTANCE.apply(areaRng.apply(1L), rivers);
+        rivers = SmoothLayer.INSTANCE.apply(areaRng.apply(1000L), rivers);
+
+        // sprinkle in some rare biome(s)
+        biomes = RareBiomeLayer.INSTANCE.apply(areaRng.apply(1001L), biomes);
+
+        // add shores, smooth
+        for(int i = 0; i < biomeSizing; ++i) {
+            biomes = ZoomTransformer.NORMAL.apply(areaRng.apply((long)(1000 + i)), biomes);
+            if (i == 0) {
+                biomes = addIsland.apply(areaRng.apply(3L), biomes);
+            }
+
+            if (i == 1 || biomeSizing == 1) {
+                biomes = ShoreLayer.INSTANCE.apply(areaRng.apply(1000L), biomes);
+            }
+        }
+        biomes = SmoothLayer.INSTANCE.apply(areaRng.apply(1000L), biomes);
+
+        // merge in river layer
+        biomes = MixRiverLayer.INSTANCE.apply(areaRng.apply(100L), biomes, rivers);
+
+        // merge in oceans
+        biomes = MixOceansLayer.INSTANCE.apply(areaRng.apply(100L), biomes, ocean);
+
+        return biomes;
+    }
+
+    public static DimzBiomeLayer getBiomeLayer(long seed, boolean legacyBiomeFlag, int biomeSizing, int riverZooming) {
+        int memCacheSize = 25;
+        LongFunction<LazyAreaLayerContext> areaRng = (seedModifier) -> {
+            return new LazyAreaLayerContext(memCacheSize, seed, seedModifier);
+        };
+        IAreaFactory<LazyArea> areaFactory = createVanillaAreaFactory(legacyBiomeFlag, biomeSizing, riverZooming, areaRng);
+        return new DimzBiomeLayer(areaFactory);
+    }
+
 }

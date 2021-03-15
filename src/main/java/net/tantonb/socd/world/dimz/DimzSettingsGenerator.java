@@ -59,6 +59,7 @@ public class DimzSettingsGenerator extends DimensionSettingsGenerator {
     protected DimensionStructuresSettings createStructuresSettings() {
         return new DimensionStructuresSettings(false);
     }
+
     private ScalingSettings createNoiseScalingSettings() {
         return new ScalingSettings(noiseScaleXz, noiseScaleY, noiseFactorXz, noiseFactorY);
     }
