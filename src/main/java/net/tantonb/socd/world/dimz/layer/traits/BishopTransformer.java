@@ -1,4 +1,4 @@
-package net.tantonb.socd.world.dimz.layer.transform;
+package net.tantonb.socd.world.dimz.layer.traits;
 
 import net.minecraft.world.gen.IExtendedNoiseRandom;
 import net.minecraft.world.gen.INoiseRandom;
@@ -25,7 +25,7 @@ public interface BishopTransformer extends AreaTransformer {
                 southeast(area, x, z),
                 northeast(area, x, z),
                 northwest(area, x, z),
-                area.getValue(x, z)
+                value(area, x, z)
         );
     }
 }

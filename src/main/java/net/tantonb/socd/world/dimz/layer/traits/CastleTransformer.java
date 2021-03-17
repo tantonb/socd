@@ -1,4 +1,4 @@
-package net.tantonb.socd.world.dimz.layer.transform;
+package net.tantonb.socd.world.dimz.layer.traits;
 
 import net.minecraft.world.gen.IExtendedNoiseRandom;
 import net.minecraft.world.gen.INoiseRandom;
@@ -25,7 +25,7 @@ public interface CastleTransformer extends AreaTransformer {
                 west(area, x, z),
                 south(area, x, z),
                 east(area, x, z),
-                center(area, x, z)
+                value(area, x, z)
         );
     }
 }

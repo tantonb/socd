@@ -11,6 +11,7 @@ import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.tantonb.socd.world.dimz.layer.DimzLayerUtil;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package net.tantonb.socd.world.dimz.layer.transform;
+package net.tantonb.socd.world.dimz.layer.traits;
 
 import net.minecraft.world.gen.area.IArea;
 
@@ -14,7 +14,7 @@ import net.minecraft.world.gen.area.IArea;
  *      South -> positive z
  *      East -> positive x
  */
-public interface OffsetTransformer {
+public interface Offsets {
 
     default int getOffsetX(int x) { return x; }
 
@@ -52,7 +52,7 @@ public interface OffsetTransformer {
         return area.getValue(getOffsetX(x + 1), getOffsetZ(z - 1));
     }
 
-    default int center(IArea area, int x, int z) {
+    default int value(IArea area, int x, int z) {
         return area.getValue(getOffsetX(x), getOffsetZ(z));
     }
 }

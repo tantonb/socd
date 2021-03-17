@@ -2,7 +2,7 @@ package net.tantonb.socd.world.dimz.layer;
 
 import net.minecraft.world.gen.IExtendedNoiseRandom;
 import net.minecraft.world.gen.area.IArea;
-import net.tantonb.socd.world.dimz.layer.transform.AreaTransformer;
+import net.tantonb.socd.world.dimz.layer.traits.AreaTransformer;
 
 public enum ZoomTransformer implements AreaTransformer {
     NORMAL,
@@ -11,7 +11,7 @@ public enum ZoomTransformer implements AreaTransformer {
          * Randomly pick from four values.
          */
         @Override
-        protected int pickZoomed(IExtendedNoiseRandom<?> areaRng, int val1, int val2, int val3, int val4) {
+        protected int pickZoom(IExtendedNoiseRandom<?> areaRng, int val1, int val2, int val3, int val4) {
             return areaRng.pickRandom(val1, val2, val3, val4);
         }
     };
@@ -19,7 +19,7 @@ public enum ZoomTransformer implements AreaTransformer {
     /**
      * Pick the most common of four values, or randomly chooses if all are different.
      */
-    protected int pickZoomed(IExtendedNoiseRandom<?> areaRng, int val1, int val2, int val3, int val4) {
+    protected int pickZoom(IExtendedNoiseRandom<?> areaRng, int val1, int val2, int val3, int val4) {
         if (val2 == val3 && val3 == val4) {
             return val2;
         } else if (val1 == val2 && val1 == val3) {
@@ -109,7 +109,6 @@ public enum ZoomTransformer implements AreaTransformer {
 
         // both odd
         int dVal = area.getValue(this.getOffsetX(x + 1), this.getOffsetZ(z + 1));
-        return this.pickZoomed(areaRng, aVal, bVal, cVal, dVal);
+        return pickZoom(areaRng, aVal, bVal, cVal, dVal);
     }
-
 }

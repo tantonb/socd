@@ -1,4 +1,4 @@
-package net.tantonb.socd.world.dimz.layer.transform;
+package net.tantonb.socd.world.dimz.layer.traits;
 
 import net.minecraft.world.gen.IExtendedNoiseRandom;
 import net.minecraft.world.gen.INoiseRandom;
@@ -17,10 +17,10 @@ public interface AreaInitializer {
         return () -> {
             return areaRng.makeArea((x, z) -> {
                 areaRng.setPosition((long)x, (long)z);
-                return this.transform(areaRng, x, z);
+                return this.initialize(areaRng, x, z);
             });
         };
     }
 
-    int transform(INoiseRandom areaRng, int x, int z);
+    int initialize(INoiseRandom areaRng, int x, int z);
 }
