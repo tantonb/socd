@@ -5,7 +5,7 @@ import net.minecraft.world.gen.area.IArea;
 import net.tantonb.socd.world.dimz.layer.traits.AreaTransformer;
 import net.tantonb.socd.world.dimz.layer.traits.Oceans;
 
-public enum StartRiverTransormer implements AreaTransformer, Oceans {
+public enum StartRiverTransformer implements AreaTransformer, Oceans {
 
     INSTANCE;
 

@@ -20,6 +20,11 @@ public interface AreaTransformer extends Offsets {
         return false;
     }
 
+    default boolean matchesAll(int value, int ...candidates) {
+        for (int c : candidates) if (c != value) return false;
+        return true;
+    }
+
     default <AreaType extends IArea> IAreaFactory<AreaType> transform(
             IExtendedNoiseRandom<AreaType> areaRng,
             IAreaFactory<AreaType> areaFactory)
