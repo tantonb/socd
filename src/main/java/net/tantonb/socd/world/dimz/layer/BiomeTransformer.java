@@ -38,14 +38,14 @@ public class BiomeTransformer implements AreaTransformer, Oceans, Temperatures {
         return WorldGenRegistries.BIOME.getId(WorldGenRegistries.BIOME.getValueForKey(getBiome(type, areaRng)));
     }
 
-    public int transform(IExtendedNoiseRandom<?> areaRng, IArea area, int x, int z) {
+    public int transform(AreaRng rng, IArea area, int x, int z) {
 
         // retrieve "composite" value, extract base value
         int compValue = value(area, x, z);
         int value = compValue & -3841; // mask out any special tag
 
         // leave ocean or mushroom island value as is
-        if (isOcean(value) || value == 14) return value;
+        if (isOcean(value) || value == MUSHROOM_FIELDS) return value;
 
         // convert land temperature value to randomly selected biome or special
         // biome variant if special biome tag is present
@@ -53,27 +53,27 @@ public class BiomeTransformer implements AreaTransformer, Oceans, Temperatures {
         switch(value) {
             case HOT:
                 if (special > 0) {
-                    return areaRng.random(3) == 0 ? 39 : 38; // badlands
+                    return rng.random(3) == 0 ? BADLANDS_PLATEAU : WOODED_BADLANDS_PLATEAU;
                 }
-                return getBiomeId(BiomeManager.BiomeType.DESERT, areaRng);
+                return getBiomeId(BiomeManager.BiomeType.DESERT, rng);
 
             case WARM:
                 if (special > 0) {
-                    return 21; // jungle
+                    return JUNGLE;
                 }
-                return getBiomeId(BiomeManager.BiomeType.WARM, areaRng);
+                return getBiomeId(BiomeManager.BiomeType.WARM, rng);
 
             case COOL:
                 if (special > 0) {
-                    return 32; // giant tree taiga
+                    return GIANT_TREE_TAIGA;
                 }
-                return getBiomeId(BiomeManager.BiomeType.COOL, areaRng);
+                return getBiomeId(BiomeManager.BiomeType.COOL, rng);
 
             case ICY:
-                return getBiomeId(BiomeManager.BiomeType.ICY, areaRng);
+                return getBiomeId(BiomeManager.BiomeType.ICY, rng);
 
             default:
-                return 14; // mushroom fields (shouldn't get here...)
+                return MUSHROOM_FIELDS; // mushroom fields (shouldn't get here...)
         }
     }
 }

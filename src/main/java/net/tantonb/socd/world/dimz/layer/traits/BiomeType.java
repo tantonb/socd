@@ -1,14 +1,6 @@
 package net.tantonb.socd.world.dimz.layer.traits;
 
 import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistry;
-
-import java.util.Map;
 
 public enum BiomeType {
     NONE,
@@ -22,7 +14,8 @@ public enum BiomeType {
     ICY,
     BEACH,
     FOREST,
-    OCEAN,
+    DEEP_OCEAN,
+    SHALLOW_OCEAN,
     DESERT,
     RIVER,
     SWAMP,
@@ -30,163 +23,173 @@ public enum BiomeType {
 
     private static Int2IntOpenHashMap idToType = new Int2IntOpenHashMap();
 
-    private static Object2IntArrayMap<RegistryKey<Biome>> keyToId = new Object2IntArrayMap<>();
-
-    private static void mapIds2Type(BiomeType t, RegistryKey<Biome> ... keys) {
-        for (RegistryKey<Biome> key : keys) idToType.put(keyToId.getInt(key), t.ordinal());
+    private static void mapIds2Type(BiomeType t, int ... biomeIds) {
+        for (int biomeId : biomeIds) idToType.put(biomeId, t.ordinal());
     }
 
     static {
-        for (Map.Entry<RegistryKey<Biome>, Biome> e : ForgeRegistries.BIOMES.getEntries()) {
-            RegistryKey<Biome> key = e.getKey();
-            int biomeId = ((ForgeRegistry<Biome>) ForgeRegistries.BIOMES).getID(e.getValue());
-            keyToId.put(key, biomeId);
-        }
-
         mapIds2Type(
                 NONE,
-                Biomes.STONE_SHORE
+                BiomeIds.STONE_SHORE
         );
 
         mapIds2Type(
                 TAIGA,
-                Biomes.TAIGA,
-                Biomes.TAIGA_HILLS,
-                Biomes.SNOWY_TAIGA,
-                Biomes.SNOWY_TAIGA_HILLS,
-                Biomes.GIANT_TREE_TAIGA,
-                Biomes.GIANT_TREE_TAIGA_HILLS,
-                Biomes.TAIGA_MOUNTAINS,
-                Biomes.SNOWY_TAIGA_MOUNTAINS,
-                Biomes.GIANT_SPRUCE_TAIGA,
-                Biomes.GIANT_SPRUCE_TAIGA_HILLS
+                BiomeIds.TAIGA,
+                BiomeIds.TAIGA_HILLS,
+                BiomeIds.SNOWY_TAIGA,
+                BiomeIds.SNOWY_TAIGA_HILLS,
+                BiomeIds.GIANT_TREE_TAIGA,
+                BiomeIds.GIANT_TREE_TAIGA_HILLS,
+                BiomeIds.TAIGA_MOUNTAINS,
+                BiomeIds.SNOWY_TAIGA_MOUNTAINS,
+                BiomeIds.GIANT_SPRUCE_TAIGA,
+                BiomeIds.GIANT_SPRUCE_TAIGA_HILLS
         );
 
         mapIds2Type(
                 MOUNTAINS,
-                Biomes.MOUNTAINS,
-                Biomes.MOUNTAIN_EDGE,
-                Biomes.WOODED_MOUNTAINS,
-                Biomes.GRAVELLY_MOUNTAINS,
-                Biomes.MODIFIED_GRAVELLY_MOUNTAINS
+                BiomeIds.MOUNTAINS,
+                BiomeIds.MOUNTAIN_EDGE,
+                BiomeIds.WOODED_MOUNTAINS,
+                BiomeIds.GRAVELLY_MOUNTAINS,
+                BiomeIds.MODIFIED_GRAVELLY_MOUNTAINS
         );
 
         mapIds2Type(
                 JUNGLE,
-                Biomes.JUNGLE,
-                Biomes.JUNGLE_HILLS,
-                Biomes.JUNGLE_EDGE,
-                Biomes.MODIFIED_JUNGLE,
-                Biomes.MODIFIED_JUNGLE_EDGE,
-                Biomes.BAMBOO_JUNGLE,
-                Biomes.BAMBOO_JUNGLE_HILLS
+                BiomeIds.JUNGLE,
+                BiomeIds.JUNGLE_HILLS,
+                BiomeIds.JUNGLE_EDGE,
+                BiomeIds.MODIFIED_JUNGLE,
+                BiomeIds.MODIFIED_JUNGLE_EDGE,
+                BiomeIds.BAMBOO_JUNGLE,
+                BiomeIds.BAMBOO_JUNGLE_HILLS
         );
 
         mapIds2Type(
                 MESA,
-                Biomes.BADLANDS,
-                Biomes.ERODED_BADLANDS,
-                Biomes.MODIFIED_WOODED_BADLANDS_PLATEAU,
-                Biomes.MODIFIED_BADLANDS_PLATEAU
+                BiomeIds.BADLANDS,
+                BiomeIds.ERODED_BADLANDS,
+                BiomeIds.MODIFIED_WOODED_BADLANDS_PLATEAU,
+                BiomeIds.MODIFIED_BADLANDS_PLATEAU
         );
 
         mapIds2Type(
                 BADLANDS_PLATEAU,
-                Biomes.BADLANDS_PLATEAU,
-                Biomes.WOODED_BADLANDS_PLATEAU
+                BiomeIds.BADLANDS_PLATEAU,
+                BiomeIds.WOODED_BADLANDS_PLATEAU
         );
 
         mapIds2Type(
                 PLAINS,
-                Biomes.PLAINS,
-                Biomes.SUNFLOWER_PLAINS
+                BiomeIds.PLAINS,
+                BiomeIds.SUNFLOWER_PLAINS
         );
 
         mapIds2Type(
                 SAVANNA,
-                Biomes.SAVANNA,
-                Biomes.SAVANNA_PLATEAU,
-                Biomes.SHATTERED_SAVANNA,
-                Biomes.SHATTERED_SAVANNA_PLATEAU
+                BiomeIds.SAVANNA,
+                BiomeIds.SAVANNA_PLATEAU,
+                BiomeIds.SHATTERED_SAVANNA,
+                BiomeIds.SHATTERED_SAVANNA_PLATEAU
         );
 
         mapIds2Type(
                 ICY,
-                Biomes.SNOWY_TUNDRA,
-                Biomes.SNOWY_MOUNTAINS,
-                Biomes.ICE_SPIKES
+                BiomeIds.SNOWY_TUNDRA,
+                BiomeIds.SNOWY_MOUNTAINS,
+                BiomeIds.ICE_SPIKES
         );
 
         mapIds2Type(
                 BEACH,
-                Biomes.BEACH,
-                Biomes.SNOWY_BEACH
+                BiomeIds.BEACH,
+                BiomeIds.SNOWY_BEACH
         );
 
         mapIds2Type(
                 FOREST,
-                Biomes.FOREST,
-                Biomes.WOODED_HILLS,
-                Biomes.BIRCH_FOREST,
-                Biomes.BIRCH_FOREST_HILLS,
-                Biomes.DARK_FOREST,
-                Biomes.FLOWER_FOREST,
-                Biomes.TALL_BIRCH_FOREST,
-                Biomes.TALL_BIRCH_HILLS,
-                Biomes.DARK_FOREST_HILLS
+                BiomeIds.FOREST,
+                BiomeIds.WOODED_HILLS,
+                BiomeIds.BIRCH_FOREST,
+                BiomeIds.BIRCH_FOREST_HILLS,
+                BiomeIds.DARK_FOREST,
+                BiomeIds.FLOWER_FOREST,
+                BiomeIds.TALL_BIRCH_FOREST,
+                BiomeIds.TALL_BIRCH_HILLS,
+                BiomeIds.DARK_FOREST_HILLS
         );
 
         mapIds2Type(
-                OCEAN,
-                Biomes.OCEAN,
-                Biomes.FROZEN_OCEAN,
-                Biomes.DEEP_OCEAN,
-                Biomes.WARM_OCEAN,
-                Biomes.LUKEWARM_OCEAN,
-                Biomes.COLD_OCEAN,
-                Biomes.DEEP_WARM_OCEAN,
-                Biomes.DEEP_LUKEWARM_OCEAN,
-                Biomes.DEEP_COLD_OCEAN,
-                Biomes.DEEP_FROZEN_OCEAN
+                DEEP_OCEAN,
+                BiomeIds.DEEP_OCEAN,
+                BiomeIds.DEEP_WARM_OCEAN,
+                BiomeIds.DEEP_LUKEWARM_OCEAN,
+                BiomeIds.DEEP_COLD_OCEAN,
+                BiomeIds.DEEP_FROZEN_OCEAN
+        );
+
+        mapIds2Type(
+                SHALLOW_OCEAN,
+                BiomeIds.OCEAN,
+                BiomeIds.FROZEN_OCEAN,
+                BiomeIds.WARM_OCEAN,
+                BiomeIds.LUKEWARM_OCEAN,
+                BiomeIds.COLD_OCEAN
         );
 
         mapIds2Type(
                 DESERT,
-                Biomes.DESERT,
-                Biomes.DESERT_HILLS,
-                Biomes.DESERT_LAKES
+                BiomeIds.DESERT,
+                BiomeIds.DESERT_HILLS,
+                BiomeIds.DESERT_LAKES
         );
 
         mapIds2Type(
                 RIVER,
-                Biomes.RIVER,
-                Biomes.FROZEN_RIVER
+                BiomeIds.RIVER,
+                BiomeIds.FROZEN_RIVER
         );
 
         mapIds2Type(
                 SWAMP,
-                Biomes.SWAMP,
-                Biomes.SWAMP_HILLS
+                BiomeIds.SWAMP,
+                BiomeIds.SWAMP_HILLS
         );
 
         mapIds2Type(
                 MUSHROOM,
-                Biomes.MUSHROOM_FIELDS,
-                Biomes.MUSHROOM_FIELD_SHORE
+                BiomeIds.MUSHROOM_FIELDS,
+                BiomeIds.MUSHROOM_FIELD_SHORE
         );
     }
 
-    public static boolean similar(int id1, int ... ids) {
-        int idType = idToType.get(id1);
-        for (int id : ids) if (idType != idToType.get(id)) return false;
+    /**
+     * Returns true if all biome id's types match.
+     */
+    public static boolean similar(int firstId, int ... biomeIds) {
+        int firstType = idToType.get(firstId);
+        for (int id : biomeIds) if (firstType != idToType.get(id)) return false;
         return true;
     }
 
-    public static boolean similar(int id1, int id2) {
-        return idToType.get(id1) == idToType.get(id2);
+    /**
+     * Return true if biome type 1 matches biome type 2.
+     */
+    public static boolean similar(int biomeId1, int biomeId2) {
+        return idToType.get(biomeId1) == idToType.get(biomeId2);
     }
 
-    public boolean has(int id) {
-        return idToType.get(id) == this.ordinal();
+    /**
+     * Returns true if biome id's type matches this.
+     */
+    public boolean includes(int biomeId) {
+        return idToType.get(biomeId) == this.ordinal();
+    }
+
+    public boolean includes(int ... biomeIds) {
+        for (int biomeId : biomeIds) if (!includes(biomeId)) return false;
+        return true;
     }
 }

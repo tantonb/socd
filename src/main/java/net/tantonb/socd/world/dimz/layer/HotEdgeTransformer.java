@@ -1,6 +1,5 @@
 package net.tantonb.socd.world.dimz.layer;
 
-import net.minecraft.world.gen.INoiseRandom;
 import net.tantonb.socd.world.dimz.layer.traits.CastleTransformer;
 import net.tantonb.socd.world.dimz.layer.traits.Temperatures;
 
@@ -11,7 +10,7 @@ public enum HotEdgeTransformer implements CastleTransformer, Temperatures {
 
     INSTANCE;
 
-    public int transform(INoiseRandom areaRng, int north, int west, int south, int east, int center) {
+    public int transform(AreaRng rng, int north, int west, int south, int east, int center) {
         if (center == HOT) {
             if (matchesAny(COOL, north, west, east, south) || matchesAny(ICY, north, west, east, south)) {
                 return WARM;

@@ -81,7 +81,7 @@ public enum ZoomTransformer implements AreaTransformer {
      *
      */
 
-    public int transform(IExtendedNoiseRandom<?> areaRng, IArea area, int x, int z) {
+    public int transform(AreaRng rng, IArea area, int x, int z) {
 
         boolean xEven = (x & 1) == 0;
         boolean zEven = (z & 1) == 0;
@@ -93,22 +93,22 @@ public enum ZoomTransformer implements AreaTransformer {
         }
 
         // randomness will be needed, set rng to pos a
-        areaRng.setPosition((long)(x >> 1 << 1), (long)(z >> 1 << 1));
+        rng.setPosition((long)(x >> 1 << 1), (long)(z >> 1 << 1));
 
         // x odd, z even
         int bVal = area.getValue(this.getOffsetX(x + 1), this.getOffsetZ(z));
         if (zEven) {
-            return areaRng.pickRandom(aVal, bVal);
+            return rng.pickRandom(aVal, bVal);
         }
 
         // x even, z odd
         int cVal = area.getValue(this.getOffsetX(x), this.getOffsetZ(z + 1));
         if (xEven) {
-            return areaRng.pickRandom(aVal, cVal);
+            return rng.pickRandom(aVal, cVal);
         }
 
         // both odd
         int dVal = area.getValue(this.getOffsetX(x + 1), this.getOffsetZ(z + 1));
-        return pickZoom(areaRng, aVal, bVal, cVal, dVal);
+        return pickZoom(rng, aVal, bVal, cVal, dVal);
     }
 }

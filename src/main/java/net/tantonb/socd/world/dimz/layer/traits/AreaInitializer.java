@@ -1,9 +1,8 @@
 package net.tantonb.socd.world.dimz.layer.traits;
 
-import net.minecraft.world.gen.IExtendedNoiseRandom;
-import net.minecraft.world.gen.INoiseRandom;
-import net.minecraft.world.gen.area.IArea;
 import net.minecraft.world.gen.area.IAreaFactory;
+import net.minecraft.world.gen.area.LazyArea;
+import net.tantonb.socd.world.dimz.layer.AreaRng;
 
 
 /**
@@ -12,15 +11,16 @@ import net.minecraft.world.gen.area.IAreaFactory;
  *
  * based on net.minecraft.world.gen.layer.traits.IAreaTransformer0
  */
-public interface AreaInitializer {
-    default <R extends IArea> IAreaFactory<R> initialize(IExtendedNoiseRandom<R> areaRng) {
+public interface AreaInitializer extends BiomeIds {
+
+    default IAreaFactory<LazyArea> initialize(AreaRng rng) {
         return () -> {
-            return areaRng.makeArea((x, z) -> {
-                areaRng.setPosition((long)x, (long)z);
-                return this.initialize(areaRng, x, z);
+            return rng.makeArea((x, z) -> {
+                rng.setPosition((long) x, (long) z);
+                return this.initialize(rng, x, z);
             });
         };
     }
 
-    int initialize(INoiseRandom areaRng, int x, int z);
+    int initialize(AreaRng rng, int x, int z);
 }

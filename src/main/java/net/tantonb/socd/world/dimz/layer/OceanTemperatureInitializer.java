@@ -9,8 +9,8 @@ public enum OceanTemperatureInitializer implements AreaInitializer, Oceans {
 
     INSTANCE;
 
-    public int initialize(INoiseRandom areaRng, int x, int z) {
-        ImprovedNoiseGenerator noiseGen = areaRng.getNoiseGenerator();
+    public int initialize(AreaRng rng, int x, int z) {
+        ImprovedNoiseGenerator noiseGen = rng.getNoiseGenerator();
         double noise = noiseGen.func_215456_a((double)x / 8.0D, (double)z / 8.0D, 0.0D, 0.0D, 0.0D);
         if (noise > 0.4D) {
             return WARM_OCEAN;

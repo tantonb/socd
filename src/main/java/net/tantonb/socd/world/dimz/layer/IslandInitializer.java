@@ -14,11 +14,8 @@ public enum IslandInitializer implements AreaInitializer {
 
     INSTANCE;
 
-    public int initialize(INoiseRandom areaRng, int x, int z) {
-        if (x == 0 && z == 0) {
-            return 1;
-        } else {
-            return areaRng.random(10) == 0 ? 1 : 0;
-        }
+    public int initialize(AreaRng rng, int x, int z) {
+        if ((x == 0 && z == 0) || rng.random(10) == 0) return PLAINS;
+        return OCEAN;
     }
 }

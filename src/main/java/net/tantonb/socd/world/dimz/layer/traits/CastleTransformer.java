@@ -3,6 +3,7 @@ package net.tantonb.socd.world.dimz.layer.traits;
 import net.minecraft.world.gen.IExtendedNoiseRandom;
 import net.minecraft.world.gen.INoiseRandom;
 import net.minecraft.world.gen.area.IArea;
+import net.tantonb.socd.world.dimz.layer.AreaRng;
 
 /**
  * Transform each point in an area based on adjacent neighbor values.
@@ -16,11 +17,11 @@ import net.minecraft.world.gen.area.IArea;
  */
 public interface CastleTransformer extends AreaTransformer {
 
-    int transform(INoiseRandom areaRng, int north, int west, int south, int east, int center);
+    int transform(AreaRng rng, int north, int west, int south, int east, int center);
 
-    default int transform(IExtendedNoiseRandom<?> areaRng, IArea area, int x, int z) {
+    default int transform(AreaRng rng, IArea area, int x, int z) {
         return transform(
-                areaRng,
+                rng,
                 north(area, x, z),
                 west(area, x, z),
                 south(area, x, z),

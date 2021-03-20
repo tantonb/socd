@@ -14,12 +14,12 @@ public enum LandTemperatureTransformer implements AreaTransformer, Temperatures,
 
     INSTANCE;
 
-    public int transform(IExtendedNoiseRandom areaRng, IArea area, int x, int z) {
+    public int transform(AreaRng rng, IArea area, int x, int z) {
         int val = value(area, x, z);
         if (isOcean(val)) return val;
-        int roll = areaRng.random(6);
-        if (roll == 0) return ICY;
-        if (roll == 1) return COOL;
+        int roll = rng.roll(6);
+        if (roll == 1) return ICY;
+        if (roll == 2) return COOL;
         return HOT;
     }
 }

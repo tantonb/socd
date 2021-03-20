@@ -8,9 +8,9 @@ public enum BambooForestTransformer implements AreaTransformer {
 
     INSTANCE;
 
-    public int transform(IExtendedNoiseRandom areaRng, IArea area, int x, int z) {
+    public int transform(AreaRng rng, IArea area, int x, int z) {
         int value = value(area, x, z);
-        if (value == 21 && areaRng.random(10) == 0) {
+        if (value == 21 && rng.random(10) == 0) {
             return 168;
         }
         return value;

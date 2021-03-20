@@ -55,7 +55,7 @@ public class DimzBiomeProvider extends BiomeProvider {
         // modify seed to not duplicate vanilla overworld
         this.seed = seed + seedModifier;
         this.lookupRegistry = lookupRegistry;
-        this.biomeLayer = DimzLayerUtil.getBiomeLayer(this.seed,false,4,4);
+        this.biomeLayer = DimzLayerUtil.getBiomeLayer(this.seed,4,4);
     }
 
     protected Codec<? extends BiomeProvider> getBiomeProviderCodec() {
